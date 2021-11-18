@@ -20,14 +20,17 @@ x0 = randn(N, 1);
 A = randn(M, N);
 b = randn(M, 1);
 
-pwlin_fun = @(x) pwlin_problem(x, A, b);
+pwlin_fn = @(x) pwlin_problem(x, A, b);
 
 %% Solve the problem with simple SGM with diminishing step size.
-[x1, fh1, fbh1] = simple_sgm(pwlin_fun, x0, K, h1);
-[x2, fh2, fbh2] = simple_sgm(pwlin_fun, x0, K, h2);
+[x1, fh1, fbh1] = simple_sgm(pwlin_fn, x0, K, h1);
+[x2, fh2, fbh2] = simple_sgm(pwlin_fn, x0, K, h2);
 
 %% Plot figures.
 figure()
 hold;
 plot(1:K, fh1, '-');
 plot(1:K, fh2, '--');
+
+%% Solve the problem with LMBM.
+% [x, fval, niter, nfeval, term, time] = lmbm_driver('pwlin_fn', 10*ones(1000,1), 1000, 1);
